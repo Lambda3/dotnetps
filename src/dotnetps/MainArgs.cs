@@ -10,7 +10,7 @@ namespace dotnetps
         private const string usage = @"dnx - The .NET Runner tool
 
 Usage:
-  dotnetps [options]
+  dotnetps [-v | --version]
 
 Options:
   --version, -v                     Show version number
@@ -20,13 +20,15 @@ Options:
         {
             var version = Assembly.GetEntryAssembly().GetName().Version.ToString();
             var args = new Docopt().Apply(usage, argv, version: version, exit: true);
-            Arguments = args["<arguments>"].AsList.Cast<ValueObject>().Select(d => d.ToString()).ToArray();
+
+            IsVersionRequest = bool.Parse(args["--version"]?.ToString());
+
             Version = args["--version"]?.ToString();
         }
-        
+
         public string[] Arguments { get; }
-        
+
         public string Version { get; }
-        public bool IsVersionRequest => !string.IsNullOrEmpty(Version);
+        public bool IsVersionRequest { get; }
     }
 }
