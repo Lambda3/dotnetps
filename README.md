@@ -1,4 +1,4 @@
-# DOTNETPS - .NET Execute
+# DOTNETPS
 
 A tool that helps you check your dotnet processes, aka alias for `pgrep dotnet | xargs ps -p` on Unix or `Get-Process dotnet` on Windows.
 
@@ -27,6 +27,10 @@ dotnetps
 Just cd to `src/dotnetps` and run `dotnet pack -C Release -o ../nupkg`.
 
 Then cd to `dotnetps/nupkg` and run `dotnet install tool -g dotnetps`.
+
+## Feature
+
+Add ASP.NET to the dotnetps output when given _aspnet_ argument.
 
 ## Maintainers/Core team
 
