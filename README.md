@@ -1,12 +1,12 @@
 # DOTNETPS - .NET Execute
 
-A tool that helps you check your dotnet processes, aka alias for `pgrep dotnet | xargs ps -p`.
+A tool that helps you check your dotnet processes, aka alias for `pgrep dotnet | xargs ps -p` on Unix or `Get-Process dotnet` on Windows.
 
 .NET global tools are a new feature in .NET 2.1, which is currently in preview.
 
 ## Installing
 
-Install .NET CLI at least 2.1 from [dot.net](https://dot.net).
+Install .NET Core CLI at least 2.1 from [microsoft.com](https://www.microsoft.com/net/download/all).
 
 Then run:
 
@@ -26,7 +26,7 @@ dotnetps
 
 Just cd to `src/dotnetps` and run `dotnet pack -C Release -o ../nupkg`.
 
-Then cd to `src/nupkg` and run `dotnet install tool -g dotnetps`.
+Then cd to `dotnetps/nupkg` and run `dotnet install tool -g dotnetps`.
 
 ## Maintainers/Core team
 
