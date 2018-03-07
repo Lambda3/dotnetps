@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <PackAsTool>true</PackAsTool>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Description>A tool that helps you monitor dotnet processes running.
  
  Install with the .NET CLI 2.1 or newer:
