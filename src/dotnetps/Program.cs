@@ -1,51 +1,68 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace dotnetps
 {
     class Program
     {
+        static ConsoleColor DEFAULT_CONSOLE_COLOR = Console.ForegroundColor;
+        
         static void Main(string[] args)
         {
-            var (output, success) = "pgrep dotnet | xargs ps -p".Bash();
-            if(success)
+            var (output, success) = RunCommand();
+
+            if (success)
                 Console.WriteLine(output);
             else
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Something very bad (and sad 😢) happened.");
-                Console.WriteLine(output);
-            }
+                PrintErrorMessage(output);
         }
-    }
 
-    public static class ShellHelper
-    {
-        public static (string, bool) Bash(this string cmd)
+        static (string, bool) RunCommand()
         {
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = "/bin/bash",
+                Arguments = "-c \"pgrep dotnet | xargs ps -p\"",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            };
+
+            if (IsWindows())
+                PrepareWindowsProccess(startInfo);
+
+            var process = new Process { StartInfo = startInfo };
+
             try
             {
-                var process = new Process()
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = "/bin/bash",
-                        Arguments = $"-c \"{cmd}\"",
-                        RedirectStandardOutput = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                    }
-                };
                 process.Start();
-                var result = process.StandardOutput.ReadToEnd();
+                var output = process.StandardOutput.ReadToEnd();
                 process.WaitForExit();
 
-                return (result, true);
+                return (output, process.ExitCode == 0);
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 return (ex.Message, false);
             }
+        }
+        static bool IsWindows() =>
+            System.Runtime.InteropServices.RuntimeInformation
+                                               .IsOSPlatform(OSPlatform.Windows);
+
+        static void PrepareWindowsProccess(ProcessStartInfo startInfo)
+        {
+            startInfo.FileName = "Powershell";
+            startInfo.Arguments = "Get-Process dotnet | Format-List *";
+        }
+
+        static void PrintErrorMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Something very bad (and sad 😢) happened.");
+            Console.WriteLine(message);
+            Console.ForegroundColor = DEFAULT_CONSOLE_COLOR;
         }
     }
 }
