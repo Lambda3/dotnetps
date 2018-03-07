@@ -27,5 +27,6 @@ Options:
         public string[] Arguments { get; }
         
         public string Version { get; }
+        public bool IsVersionRequest => !string.IsNullOrEmpty(Version);
     }
 }

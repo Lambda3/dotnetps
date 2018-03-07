@@ -11,11 +11,13 @@ namespace dotnetps
         static void Main(string[] args)
         {
             var arguments = new MainArgs(args);
-            if(!string.IsNullOrEmpty(arguments.Version))
+
+            if(arguments.IsVersionRequest)
             {
                 Console.WriteLine($"dotnetps version: {arguments.Version}");
                 return;
             }
+
             var (output, success) = RunCommand();
 
             if (success)
@@ -56,7 +58,6 @@ namespace dotnetps
         static bool IsWindows() =>
             System.Runtime.InteropServices.RuntimeInformation
                                                .IsOSPlatform(OSPlatform.Windows);
-
         static void PrepareWindowsProccess(ProcessStartInfo startInfo)
         {
             startInfo.FileName = "Powershell.exe";
