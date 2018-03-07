@@ -54,7 +54,7 @@ namespace dotnetps
         static void PrepareWindowsProccess(ProcessStartInfo startInfo)
         {
             startInfo.FileName = "Powershell.exe";
-            startInfo.Arguments = "Get-Process dotnet | Format-List *";
+            startInfo.Arguments = "-NoProfile Get-Process dotnet | Format-List *";
         }
 
         static void PrintErrorMessage(string message)
